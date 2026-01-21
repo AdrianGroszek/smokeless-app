@@ -112,7 +112,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const isDark = activeTheme === 'dark';
   const colors = isDark ? darkColors : lightColors;
 
-  // Nie renderuj children dopóki motyw nie zostanie wczytany
   if (!isReady) {
     return null;
   }

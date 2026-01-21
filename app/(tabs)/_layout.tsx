@@ -1,21 +1,26 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useTheme } from '@/hooks/useTheme';
 
 export default function TabsLayout() {
+  const { colors } = useTheme();
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarInactiveTintColor: '#94A3B8',
-        tabBarActiveTintColor: '#2EC4B6',
+        tabBarInactiveTintColor: colors.textMuted,
+        tabBarActiveTintColor: colors.primary,
+        tabBarStyle: {
+          backgroundColor: colors.surface,
+        },
       }}
     >
       <Tabs.Screen
         name='index'
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size, focused }) => (
+          tabBarIcon: ({ color, size }) => (
             <Ionicons name='home' color={color} size={size} />
           ),
         }}
@@ -24,7 +29,7 @@ export default function TabsLayout() {
         name='progress'
         options={{
           title: 'Progress',
-          tabBarIcon: ({ color, size, focused }) => (
+          tabBarIcon: ({ color, size }) => (
             <Ionicons name='pie-chart' color={color} size={size} />
           ),
         }}
@@ -33,7 +38,7 @@ export default function TabsLayout() {
         name='settings'
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color, size, focused }) => (
+          tabBarIcon: ({ color, size }) => (
             <Ionicons name='settings' color={color} size={size} />
           ),
         }}
