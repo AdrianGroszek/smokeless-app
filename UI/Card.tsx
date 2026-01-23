@@ -7,16 +7,21 @@ type Props = {
   title: string;
   subtitle: string;
   iconName: keyof typeof Ionicons.glyphMap;
+  isLocked?: boolean;
 };
 
-export default function Card({ title, subtitle, iconName }: Props) {
+export default function Card({ title, subtitle, iconName, isLocked }: Props) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <View style={styles.summaryCard}>
+    <View style={[styles.summaryCard, isLocked && { opacity: 0.5 }]}>
       <View style={styles.iconContainer}>
-        <Ionicons name={iconName} size={20} color={colors.surface} />
+        <Ionicons
+          name={isLocked ? 'lock-closed-outline' : iconName}
+          size={20}
+          color={colors.surface}
+        />
       </View>
       <View>
         <Text style={styles.summaryText}>{title}</Text>
