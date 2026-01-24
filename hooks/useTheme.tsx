@@ -20,6 +20,7 @@ export type ColorScheme = {
 
   primary: string;
   primaryMuted: string;
+  primary10: string;
 
   warning: string;
 
@@ -38,6 +39,7 @@ export const lightColors: ColorScheme = {
 
   primary: '#2EC4B6',
   primaryMuted: '#1AA79A',
+  primary10: 'rgba(46, 196, 181, 0.1)',
 
   warning: '#FFC72C',
 
@@ -56,6 +58,7 @@ export const darkColors: ColorScheme = {
 
   primary: '#2EC4B6',
   primaryMuted: '#1AA79A',
+  primary10: '#2EC4B6',
 
   warning: '#FFC72C',
 
