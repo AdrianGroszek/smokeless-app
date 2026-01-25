@@ -75,10 +75,10 @@ export default function CigarettesPrice() {
               <OnboardingProgressBar
                 dashesNum={4}
                 stepsText='Step 4 of 5'
-                percentNum={80}
+                percentNum={60}
               />
               <View style={styles.iconContainer}>
-                <Ionicons name='cash' size={64} color='#fff' />
+                <Ionicons name='cash-outline' size={64} color='#fff' />
               </View>
               <View>
                 <Text style={styles.title}>Pack price?</Text>

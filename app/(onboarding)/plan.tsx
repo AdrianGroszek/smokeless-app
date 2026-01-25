@@ -8,13 +8,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Button from '@/components/Button';
 
-export type plansDataType = {
+export type PlansDataType = {
   id: number;
   planLength: number;
   planDescription: string;
 };
 
-const plansData: plansDataType[] = [
+const plansData: PlansDataType[] = [
   {
     id: 1,
     planLength: 14,
@@ -33,7 +33,7 @@ const plansData: plansDataType[] = [
 ];
 
 export default function Plan() {
-  const [selectedPlan, setSelectedPlan] = useState<plansDataType>(plansData[2]);
+  const [selectedPlan, setSelectedPlan] = useState<PlansDataType>(plansData[2]);
   const router = useRouter();
   const { colors } = useTheme();
 
@@ -46,7 +46,7 @@ export default function Plan() {
   const loadSavedPlan = async () => {
     const saved = await AsyncStorage.getItem('@onboarding_plan');
     if (saved) {
-      const parsed: plansDataType = JSON.parse(saved);
+      const parsed: PlansDataType = JSON.parse(saved);
       setSelectedPlan(parsed);
     }
   };
@@ -73,10 +73,10 @@ export default function Plan() {
             <OnboardingProgressBar
               dashesNum={5}
               stepsText='Step 5 of 5'
-              percentNum={100}
+              percentNum={80}
             />
             <View style={styles.iconContainer}>
-              <Ionicons name='reader' size={64} color='#fff' />
+              <Ionicons name='clipboard-outline' size={64} color='#fff' />
             </View>
             <View>
               <Text style={styles.title}>Choose your plan</Text>
@@ -95,7 +95,7 @@ export default function Plan() {
                 >
                   <View style={styles.selectButtonRow}>
                     <Ionicons
-                      name='calendar'
+                      name='calendar-outline'
                       size={32}
                       color={colors.primary}
                     />

@@ -23,6 +23,7 @@ export type ColorScheme = {
   primary10: string;
 
   warning: string;
+  warning10: string;
 
   statusBarStyle: 'light-content' | 'dark-content';
 };
@@ -42,6 +43,7 @@ export const lightColors: ColorScheme = {
   primary10: 'rgba(46, 196, 181, 0.1)',
 
   warning: '#FFC72C',
+  warning10: 'rgba(255, 199, 44, 0.1)',
 
   statusBarStyle: 'light-content' as const,
 };
@@ -61,6 +63,7 @@ export const darkColors: ColorScheme = {
   primary10: '#2EC4B6',
 
   warning: '#FFC72C',
+  warning10: 'rgba(255, 199, 44, 0.1)',
 
   statusBarStyle: 'dark-content' as const,
 };

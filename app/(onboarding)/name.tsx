@@ -57,10 +57,10 @@ export default function Name() {
               <OnboardingProgressBar
                 dashesNum={1}
                 stepsText='Step 1 of 5'
-                percentNum={20}
+                percentNum={0}
               />
               <View style={styles.iconContainer}>
-                <Ionicons name='person' size={64} color='#fff' />
+                <Ionicons name='person-outline' size={64} color='#fff' />
               </View>
               <View>
                 <Text style={styles.title}>What should we call you?</Text>

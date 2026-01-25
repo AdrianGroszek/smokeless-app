@@ -28,12 +28,18 @@ export default function OnboardingProgressBar({
         {[1, 2, 3, 4, 5].map((_, index) => (
           <View
             key={index}
-            style={{
-              backgroundColor:
-                index < dashesNum ? colors.primary : colors.textMuted,
-              flex: 1,
-              borderRadius: 50,
-            }}
+            style={[
+              {
+                backgroundColor:
+                  dashesNum === index + 1
+                    ? colors.warning
+                    : index < dashesNum
+                      ? colors.primary
+                      : colors.textMuted,
+                flex: 1,
+                borderRadius: 50,
+              },
+            ]}
           ></View>
         ))}
       </View>

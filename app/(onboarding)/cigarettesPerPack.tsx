@@ -13,9 +13,9 @@ import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import OnboardingProgressBar from '@/components/OnboardingProgressBar';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Button from '@/components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function CigarettesPerPack() {
   const [cigarettesPerPack, setCigarettesPerPack] = useState('');
@@ -60,14 +60,10 @@ export default function CigarettesPerPack() {
               <OnboardingProgressBar
                 dashesNum={3}
                 stepsText='Step 3 of 5'
-                percentNum={60}
+                percentNum={40}
               />
               <View style={styles.iconContainer}>
-                <MaterialCommunityIcons
-                  name='sort-numeric-variant'
-                  size={64}
-                  color='#fff'
-                />
+                <Ionicons name='cube-outline' size={64} color='#fff' />
               </View>
               <View>
                 <Text style={styles.title}>Cigarettes per pack?</Text>

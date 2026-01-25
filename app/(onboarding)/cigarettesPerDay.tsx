@@ -13,9 +13,9 @@ import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import OnboardingProgressBar from '@/components/OnboardingProgressBar';
-import Octicons from '@expo/vector-icons/Octicons';
 import Button from '@/components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function CigarettesPerDay() {
   const [cigarettesPerDay, setCigarettesPerDay] = useState('');
@@ -60,10 +60,10 @@ export default function CigarettesPerDay() {
               <OnboardingProgressBar
                 dashesNum={2}
                 stepsText='Step 2 of 5'
-                percentNum={40}
+                percentNum={20}
               />
               <View style={styles.iconContainer}>
-                <Octicons name='number' size={64} color='#fff' />
+                <Ionicons name='calendar-outline' size={64} color='#fff' />
               </View>
               <View>
                 <Text style={styles.title}>Cigarettes per day?</Text>
