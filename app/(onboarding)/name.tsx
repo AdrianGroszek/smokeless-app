@@ -7,8 +7,9 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,13 +26,17 @@ export default function Name() {
 
   const styles = createStyles(colors);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     loadSavedName();
   }, []);
 
   const loadSavedName = async () => {
-    const saved = await AsyncStorage.getItem('@onboarding_name');
-    if (saved) setName(saved);
+    try {
+      const saved = await AsyncStorage.getItem('@onboarding_name');
+      if (saved) setName(saved);
+    } catch (error) {
+      console.error('Error loading saved name: ', error);
+    }
   };
 
   const handleNext = async () => {
@@ -40,9 +45,15 @@ export default function Name() {
       return;
     }
 
-    await AsyncStorage.setItem('@onboarding_name', name.trim());
-
-    router.push('/(onboarding)/cigarettesPerDay');
+    try {
+      await AsyncStorage.setItem('@onboarding_name', name.trim());
+      router.push('/(onboarding)/cigarettesPerDay');
+    } catch (error) {
+      console.error('Error saving name: ', error);
+      Alert.alert('Error', 'Failed to save your name. Please try again.', [
+        { text: 'OK' },
+      ]);
+    }
   };
 
   return (

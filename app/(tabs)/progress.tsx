@@ -10,11 +10,11 @@ import Achievements from '@/components/Achievements';
 
 export default function Progress() {
   const { colors } = useTheme();
-
   const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <Header label='Your Progress' />
+      <Header label='Your Progress' currentDay={'2'} totalDays={'2'} />
       <ScrollView
         contentContainerStyle={{ gap: 16, paddingBottom: 16 }}
         showsVerticalScrollIndicator={false}

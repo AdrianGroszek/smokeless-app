@@ -5,16 +5,20 @@ import { View, Text, StyleSheet } from 'react-native';
 
 type Props = {
   label: string;
+  currentDay?: string;
+  totalDays?: string;
 };
 
-export default function Header({ label }: Props) {
+export default function Header({ label, currentDay, totalDays }: Props) {
   const { colors } = useTheme();
 
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View>
-      <Subtitle>Day 5 of 14</Subtitle>
+      <Subtitle>
+        Day {currentDay} of {totalDays}
+      </Subtitle>
       <Text style={styles.headerTitle}>{label}</Text>
     </View>
   );

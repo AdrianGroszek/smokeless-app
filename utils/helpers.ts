@@ -9,3 +9,7 @@ export const formatAmount = (value: string): string => {
 
   return number.toFixed(2);
 };
+
+export const getTodayKey = () => {
+  return new Date().toISOString().split('T')[0];
+};

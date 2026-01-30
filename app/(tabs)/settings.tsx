@@ -1,12 +1,50 @@
-import { View, Text } from 'react-native';
+import { View, Text, Pressable, Alert } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSmokingStore } from '@/stores/useSmokingStore';
+import { useRouter } from 'expo-router';
 
 export default function Settings() {
+  const resetApp = useSmokingStore((state) => state.resetApp);
+  const router = useRouter();
+
+  const handleReset = () => {
+    Alert.alert('Reset Aplikacji', 'Czy zresetować wszyste dane użytkownika?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'Reset',
+        onPress: () => {
+          resetApp();
+          router.replace('/(onboarding)');
+        },
+        style: 'destructive',
+      },
+    ]);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View>
-        <Text>Settings</Text>
+        <Pressable
+          onPress={handleReset}
+          style={{
+            backgroundColor: 'orange',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 12,
+            marginTop: 100,
+            marginHorizontal: 20,
+            borderRadius: 50,
+          }}
+        >
+          <Text style={{ color: 'white', fontSize: 18, fontWeight: 600 }}>
+            Reset APP
+          </Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

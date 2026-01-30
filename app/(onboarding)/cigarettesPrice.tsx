@@ -7,6 +7,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
@@ -15,31 +16,41 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import OnboardingProgressBar from '@/components/OnboardingProgressBar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Button from '@/components/Button';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { formatAmount } from '@/utils/helpers';
 
 export default function CigarettesPrice() {
   const [price, setPrice] = useState('');
-  const [currency, setCurrency] = useState('USD');
+  const [currency, setCurrency] = useState('');
   const router = useRouter();
   const { colors } = useTheme();
 
   const styles = createStyles(colors);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     loadSavedPrice();
     loadSavedCurrency();
   }, []);
 
   const loadSavedPrice = async () => {
-    const saved = await AsyncStorage.getItem('@onboarding_cigarettes_price');
-    if (saved) setPrice(saved);
+    try {
+      const saved = await AsyncStorage.getItem('@onboarding_cigarettes_price');
+      if (saved) setPrice(saved);
+    } catch (error) {
+      console.error('Error loading saved price: ', error);
+    }
   };
 
   const loadSavedCurrency = async () => {
-    const saved = await AsyncStorage.getItem('@onboarding_cigarettes_currency');
-    if (saved) setCurrency(saved);
+    try {
+      const saved = await AsyncStorage.getItem(
+        '@onboarding_cigarettes_currency',
+      );
+      if (saved) setCurrency(saved);
+    } catch (error) {
+      console.error('Error loading saved currency: ', error);
+    }
   };
 
   const handleNext = async () => {
@@ -53,14 +64,21 @@ export default function CigarettesPrice() {
       return;
     }
 
-    await AsyncStorage.setItem(
-      '@onboarding_cigarettes_price',
-      formatAmount(price),
-    );
-
-    await AsyncStorage.setItem('@onboarding_cigarettes_currency', currency);
-
-    router.push('/(onboarding)/plan');
+    try {
+      await AsyncStorage.setItem(
+        '@onboarding_cigarettes_price',
+        formatAmount(price),
+      );
+      await AsyncStorage.setItem('@onboarding_cigarettes_currency', currency);
+      router.push('/(onboarding)/plan');
+    } catch (error) {
+      console.error('Error saving price and currency: ', error);
+      Alert.alert(
+        'Error',
+        'Failed to save your price and currency. Please try again.',
+        [{ text: 'OK' }],
+      );
+    }
   };
 
   return (

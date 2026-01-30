@@ -1,4 +1,5 @@
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
+import { useSmokingStore } from '@/stores/useSmokingStore';
 import Subtitle from '@/UI/Subtitle';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useMemo } from 'react';
@@ -6,12 +7,15 @@ import { View, Text, StyleSheet } from 'react-native';
 
 export default function MotivationalCard() {
   const { colors } = useTheme();
-
   const styles = useMemo(() => createStyles(colors), [colors]);
+
+  const daysStreak = useSmokingStore((state) => state.currentStreak);
 
   return (
     <View style={styles.container}>
-      <Subtitle>🔥5 days streak</Subtitle>
+      <Subtitle>
+        🔥{daysStreak} {daysStreak === 1 ? 'day' : 'days'} streak
+      </Subtitle>
       <View style={styles.motivationalCard}>
         <View style={styles.iconContainer}>
           <Ionicons name='diamond' size={20} color={colors.surface} />

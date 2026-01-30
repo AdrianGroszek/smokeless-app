@@ -1,4 +1,6 @@
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
+import useWeekData from '@/hooks/useWeekData';
+
 import Subtitle from '@/UI/Subtitle';
 import { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
@@ -7,17 +9,55 @@ export default function WeeklyCalendar() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
-  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const weekData = useWeekData();
+  console.log(weekData);
 
   return (
     <View style={styles.container}>
       <Subtitle navigateTo='/progress'>This week</Subtitle>
       <View style={styles.weekCalendarContainer}>
-        {days.map((day, index) => (
-          <View key={day} style={styles.weekDayTile}>
-            <View style={styles.calendarDot}></View>
-            <Text>{day}</Text>
-            <Text>{index + 1}</Text>
+        {weekData.map((day) => (
+          <View
+            key={day.key}
+            style={[
+              styles.weekDayTile,
+              {
+                opacity: day.isDisabled ? 0.6 : 1,
+                borderColor: day.isToday ? colors.primary : colors.surface,
+              },
+            ]}
+          >
+            <View
+              style={[
+                styles.calendarDot,
+                {
+                  borderRadius: 8,
+                  backgroundColor: day.isDisabled
+                    ? colors.textSecondary
+                    : day.smoked <= day.limit
+                      ? colors.primary
+                      : colors.warning,
+                },
+              ]}
+            />
+            <Text
+              style={{
+                color: day.isDisabled
+                  ? colors.textSecondary
+                  : colors.textPrimary,
+              }}
+            >
+              {day.day}
+            </Text>
+            <Text
+              style={{
+                color: day.isDisabled
+                  ? colors.textSecondary
+                  : colors.textPrimary,
+              }}
+            >
+              {day.date}
+            </Text>
           </View>
         ))}
       </View>
@@ -40,8 +80,9 @@ const createStyles = (colors: ColorScheme) =>
       marginHorizontal: 4,
       paddingVertical: 8,
       borderRadius: 8,
+      borderWidth: 1,
       gap: 4,
-      backgroundColor: '#fff',
+      backgroundColor: colors.surface,
       shadowColor: '#000',
       shadowOffset: {
         width: 1,
@@ -54,7 +95,5 @@ const createStyles = (colors: ColorScheme) =>
     calendarDot: {
       width: 8,
       height: 8,
-      backgroundColor: colors.primary,
-      borderRadius: 8,
     },
   });

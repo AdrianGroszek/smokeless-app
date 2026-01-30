@@ -4,17 +4,37 @@ import Subtitle from '@/UI/Subtitle';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useMemo } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import LastCigaretteTimeText from './LastCigaretteTimeText';
+import { useSmokingStore } from '@/stores/useSmokingStore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProgressCard() {
   const { colors } = useTheme();
-
   const styles = useMemo(() => createStyles(colors), [colors]);
+
+  const addCigarette = useSmokingStore((state) => state.addCigarette);
+  const removeCigarette = useSmokingStore((state) => state.removeCigarette);
+
+  const getTodayLimit = useSmokingStore((state) => state.getTodayLimit);
+  const cigarettesLeftToday = useSmokingStore((state) =>
+    state.getCigarettesLeftToday(),
+  );
+
+  const todaySmokedCount = useSmokingStore((state) => {
+    const today = new Date().toISOString().split('T')[0];
+    return state.dailyLogs[today]?.cigarettesSmoked ?? 0;
+  });
+
+  const todayLimit = getTodayLimit();
+
+  const progressPercent =
+    todayLimit > 0 ? (todaySmokedCount / todayLimit) * 100 : 0;
 
   return (
     <View style={styles.container}>
       <View style={styles.subtitleContainer}>
         <Subtitle>Today progress</Subtitle>
-        <Subtitle>4 Cigarettes left</Subtitle>
+        <Subtitle>{cigarettesLeftToday} cigarettes left</Subtitle>
       </View>
       <View style={styles.progressInfoContainer}>
         <Pressable
@@ -22,29 +42,25 @@ export default function ProgressCard() {
             styles.circleButton,
             { backgroundColor: pressed ? colors.primaryMuted : colors.primary },
           ]}
+          onPress={removeCigarette}
         >
           <Ionicons name='remove' size={18} color='#F8FAFC' />
         </Pressable>
-        <Text style={styles.progressInfoText}>6/10</Text>
+        <Text style={styles.progressInfoText}>
+          {todaySmokedCount}/{todayLimit}
+        </Text>
         <Pressable
           style={({ pressed }) => [
             styles.circleButton,
             { backgroundColor: pressed ? colors.primaryMuted : colors.primary },
           ]}
+          onPress={addCigarette}
         >
           <Ionicons name='add' size={18} color='#F8FAFC' />
         </Pressable>
       </View>
-      <View style={styles.contentCenter}>
-        <Text style={{ fontSize: 16, fontWeight: 600 }}>Smoked today</Text>
-        <Text>
-          You smoked{' '}
-          <Text style={{ color: colors.primaryMuted, fontWeight: 600 }}>
-            40 min ago
-          </Text>
-        </Text>
-      </View>
-      <ProgressBar />
+      <LastCigaretteTimeText />
+      <ProgressBar progressPercent={progressPercent} />
     </View>
   );
 }

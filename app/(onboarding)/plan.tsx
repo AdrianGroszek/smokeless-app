@@ -1,5 +1,12 @@
-import { View, Text, Pressable, Keyboard, StyleSheet } from 'react-native';
-import React, { useLayoutEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  Pressable,
+  Keyboard,
+  StyleSheet,
+  Alert,
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -39,15 +46,19 @@ export default function Plan() {
 
   const styles = createStyles(colors);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     loadSavedPlan();
   }, []);
 
   const loadSavedPlan = async () => {
-    const saved = await AsyncStorage.getItem('@onboarding_plan');
-    if (saved) {
-      const parsed: PlansDataType = JSON.parse(saved);
-      setSelectedPlan(parsed);
+    try {
+      const saved = await AsyncStorage.getItem('@onboarding_plan');
+      if (saved) {
+        const parsed: PlansDataType = JSON.parse(saved);
+        setSelectedPlan(parsed);
+      }
+    } catch (error) {
+      console.error('Error loading saved plan: ', error);
     }
   };
 
@@ -57,12 +68,18 @@ export default function Plan() {
       return;
     }
 
-    await AsyncStorage.setItem(
-      '@onboarding_plan',
-      JSON.stringify(selectedPlan),
-    );
-
-    router.push('/(onboarding)/ready');
+    try {
+      await AsyncStorage.setItem(
+        '@onboarding_plan',
+        JSON.stringify(selectedPlan.planLength),
+      );
+      router.push('/(onboarding)/ready');
+    } catch (error) {
+      console.error('Error saving plan: ', error);
+      Alert.alert('Error', 'Failed to save your plan. Please try again.', [
+        { text: 'OK' },
+      ]);
+    }
   };
 
   return (

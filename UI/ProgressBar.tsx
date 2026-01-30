@@ -1,14 +1,29 @@
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
-export default function ProgressBar() {
+type Props = {
+  progressPercent: number;
+};
+
+export default function ProgressBar({ progressPercent }: Props) {
   const { colors } = useTheme();
-
   const styles = createStyles(colors);
+
+  const progressBarWidth = Math.round(Math.min(progressPercent, 100));
 
   return (
     <View style={styles.container}>
-      <View style={[styles.progress, { width: '60%' }]}></View>
+      <View
+        style={[
+          styles.progress,
+          {
+            width: `${progressBarWidth}%`,
+            backgroundColor:
+              progressBarWidth > 85 ? colors.warning : colors.primary,
+            borderRadius: 50,
+          },
+        ]}
+      ></View>
     </View>
   );
 }
@@ -23,7 +38,5 @@ const createStyles = (colors: ColorScheme) =>
     },
     progress: {
       height: '100%',
-      backgroundColor: colors.primary,
-      borderRadius: 50,
     },
   });

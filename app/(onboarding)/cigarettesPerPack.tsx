@@ -7,8 +7,9 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -24,13 +25,19 @@ export default function CigarettesPerPack() {
 
   const styles = createStyles(colors);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     loadSavedCigarettesPerPack();
   }, []);
 
   const loadSavedCigarettesPerPack = async () => {
-    const saved = await AsyncStorage.getItem('@onboarding_cigarettes_per_pack');
-    if (saved) setCigarettesPerPack(saved);
+    try {
+      const saved = await AsyncStorage.getItem(
+        '@onboarding_cigarettes_per_pack',
+      );
+      if (saved) setCigarettesPerPack(saved);
+    } catch (error) {
+      console.error('Error loading saved cigarettesPerPack: ', error);
+    }
   };
 
   const handleNext = async () => {
@@ -40,12 +47,20 @@ export default function CigarettesPerPack() {
       return;
     }
 
-    await AsyncStorage.setItem(
-      '@onboarding_cigarettes_per_pack',
-      cigarettesPerPack,
-    );
-
-    router.push('/(onboarding)/cigarettesPrice');
+    try {
+      await AsyncStorage.setItem(
+        '@onboarding_cigarettes_per_pack',
+        cigarettesPerPack,
+      );
+      router.push('/(onboarding)/cigarettesPrice');
+    } catch (error) {
+      console.error('Error saving cigarettesPerPack: ', error);
+      Alert.alert(
+        'Error',
+        'Failed to save count of cigarettes in single pack. Please try again.',
+        [{ text: 'OK' }],
+      );
+    }
   };
 
   return (
