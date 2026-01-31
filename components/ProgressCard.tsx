@@ -6,7 +6,6 @@ import { useMemo } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import LastCigaretteTimeText from './LastCigaretteTimeText';
 import { useSmokingStore } from '@/stores/useSmokingStore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProgressCard() {
   const { colors } = useTheme();

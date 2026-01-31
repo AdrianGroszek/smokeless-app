@@ -1,4 +1,5 @@
-import { getTodayKey } from '@/utils/helpers';
+import { ACHIEVEMENTS } from '@/constants/achievements';
+import { getTodayKey, getYesterdayKey } from '@/utils/helpers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -19,17 +20,28 @@ type DailyData = {
   smokingTimes: string[];
 };
 
+export type Achievement = {
+  id: string;
+  title: string;
+  description: string;
+  unlocked: boolean;
+  unlockedAt?: number;
+};
+
 type SmokingStore = {
   profile: UserProfile | null;
   dailyLogs: Record<string, DailyData>;
   onboardingCompleted: boolean;
   currentStreak: number;
   longestStreak: number;
+  achievements: Record<string, Achievement>;
 
   completeOnboarding: () => void;
   setProfile: (profile: UserProfile) => void;
   ensureTodayExists: () => void;
   recalculateStreaks: () => void;
+  unlockAchievement: (id: string) => void;
+  checkAchievements: () => void;
 
   addCigarette: () => void;
   removeCigarette: () => void;
@@ -39,6 +51,9 @@ type SmokingStore = {
   getCurrentDay: () => number;
   getTodayLimit: () => number;
   getCigarettesLeftToday: () => number;
+  getTotalMoneySaved: () => number;
+  getTotalCigarettesSaved: () => number;
+  getTotalTimeSaved: () => number;
 };
 
 const DAY_MS = 86400000;
@@ -55,10 +70,23 @@ export const useSmokingStore = create<SmokingStore>()(
       onboardingCompleted: false,
       currentStreak: 0,
       longestStreak: 0,
+      achievements: Object.values(ACHIEVEMENTS).reduce(
+        (acc, a) => {
+          acc[a.id] = {
+            ...a,
+            unlocked: false,
+          };
+          return acc;
+        },
+        {} as Record<string, Achievement>,
+      ),
 
       setProfile: (profile) => set({ profile }),
 
-      completeOnboarding: () => set({ onboardingCompleted: true }),
+      completeOnboarding: () => {
+        set({ onboardingCompleted: true });
+        get().unlockAchievement('plan_started');
+      },
 
       ensureTodayExists: () => {
         const todayKey = getTodayKey();
@@ -76,6 +104,8 @@ export const useSmokingStore = create<SmokingStore>()(
             },
           },
         });
+
+        get().checkAchievements();
       },
 
       recalculateStreaks: () => {
@@ -103,6 +133,60 @@ export const useSmokingStore = create<SmokingStore>()(
         }));
       },
 
+      unlockAchievement: (id) => {
+        set((state) => {
+          const achievement = state.achievements[id];
+          if (!achievement || achievement.unlocked) return state;
+
+          return {
+            ...state,
+            achievements: {
+              ...state.achievements,
+              [id]: {
+                ...achievement,
+                unlocked: true,
+                unlockedAt: Date.now(),
+              },
+            },
+          };
+        });
+      },
+
+      checkAchievements: () => {
+        const {
+          currentStreak,
+          unlockAchievement,
+          profile,
+          dailyLogs,
+          getTotalMoneySaved,
+        } = get();
+
+        if (currentStreak >= 3) unlockAchievement('streak_3');
+        if (currentStreak >= 7) unlockAchievement('streak_7');
+        if (currentStreak >= 14) unlockAchievement('streak_14');
+        if (currentStreak >= 30) unlockAchievement('streak_30');
+
+        if (profile && profile.cigarettesPerDay <= 5) {
+          unlockAchievement('under_control');
+        }
+
+        const yesterdayKey = getYesterdayKey();
+        const yesterdayLog = dailyLogs[yesterdayKey];
+        const totalMoneySaved = getTotalMoneySaved();
+
+        if (yesterdayLog?.cigarettesSmoked === 0)
+          unlockAchievement('perfect_day');
+
+        if (yesterdayLog && yesterdayLog.cigarettesSmoked === 0) {
+          unlockAchievement('just_in_time');
+        }
+
+        if (totalMoneySaved >= 10) unlockAchievement('savings_10');
+        if (totalMoneySaved >= 100) unlockAchievement('savings_100');
+        if (totalMoneySaved >= 500) unlockAchievement('savings_500');
+        if (totalMoneySaved >= 1000) unlockAchievement('savings_1000');
+      },
+
       addCigarette: () => {
         const today = new Date().toISOString().split('T')[0];
         const now = new Date().toISOString();
@@ -127,6 +211,7 @@ export const useSmokingStore = create<SmokingStore>()(
         });
 
         get().recalculateStreaks();
+        get().checkAchievements();
       },
 
       removeCigarette: () => {
@@ -151,6 +236,7 @@ export const useSmokingStore = create<SmokingStore>()(
         });
 
         get().recalculateStreaks();
+        get().checkAchievements();
       },
 
       resetApp: () => {
@@ -205,6 +291,49 @@ export const useSmokingStore = create<SmokingStore>()(
 
         return Math.max(get().getTodayLimit() - smoked, 0);
       },
+
+      getTotalMoneySaved: () => {
+        const profile = get().profile;
+        if (!profile) return 0;
+
+        const { packPrice, cigarettesPerPack, cigarettesPerDay } = profile;
+        const pricePerCigarette = packPrice / cigarettesPerPack;
+        const todayDate = getTodayKey();
+
+        let totalSaved = 0;
+
+        Object.entries(get().dailyLogs).forEach(([date, log]) => {
+          if (date === todayDate) return;
+          const saved = Math.max(cigarettesPerDay - log.cigarettesSmoked, 0);
+          totalSaved += saved * pricePerCigarette;
+        });
+
+        return totalSaved;
+      },
+
+      getTotalCigarettesSaved: () => {
+        const profile = get().profile;
+        if (!profile) return 0;
+
+        const { cigarettesPerDay } = profile;
+        const todayDate = getTodayKey();
+
+        let totalSaved = 0;
+
+        Object.entries(get().dailyLogs).forEach(([date, log]) => {
+          if (date === todayDate) return;
+          totalSaved += cigarettesPerDay - log.cigarettesSmoked;
+        });
+
+        return totalSaved;
+      },
+
+      getTotalTimeSaved: () => {
+        const totalCigarretesSaved = get().getTotalCigarettesSaved();
+        const totalMinutesSaved = totalCigarretesSaved * 5;
+
+        return totalMinutesSaved;
+      },
     }),
     {
       name: '@smoking_full_data',
@@ -215,6 +344,7 @@ export const useSmokingStore = create<SmokingStore>()(
         dailyLogs: state.dailyLogs,
         currentStreak: state.currentStreak,
         longestStreak: state.longestStreak,
+        achievements: state.achievements,
       }),
     },
   ),

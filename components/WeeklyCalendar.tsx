@@ -10,7 +10,6 @@ export default function WeeklyCalendar() {
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   const weekData = useWeekData();
-  console.log(weekData);
 
   return (
     <View style={styles.container}>

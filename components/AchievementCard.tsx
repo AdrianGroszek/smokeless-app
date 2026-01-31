@@ -2,17 +2,29 @@ import { View, Text, StyleSheet } from 'react-native';
 import React, { useMemo } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
+import { formatDateFromTimestamp } from '@/utils/helpers';
 
 type Props = {
   title: string;
   subtitle: string;
   iconName: keyof typeof Ionicons.glyphMap;
   isLocked?: boolean;
+  unlockedDate?: number;
 };
 
-export default function Card({ title, subtitle, iconName, isLocked }: Props) {
+export default function AchievementCard({
+  title,
+  subtitle,
+  iconName,
+  isLocked,
+  unlockedDate,
+}: Props) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+
+  const formattedDate = unlockedDate
+    ? formatDateFromTimestamp(unlockedDate)
+    : null;
 
   return (
     <View style={[styles.summaryCard, isLocked && { opacity: 0.5 }]}>
@@ -23,8 +35,13 @@ export default function Card({ title, subtitle, iconName, isLocked }: Props) {
           color={colors.surface}
         />
       </View>
-      <View>
-        <Text style={styles.summaryText}>{title}</Text>
+      <View style={{ flex: 1, paddingRight: 8 }}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.summaryText}>{title}</Text>
+          {!isLocked && (
+            <Text style={styles.textMutedColor}>{formattedDate}</Text>
+          )}
+        </View>
         <Text style={[styles.summaryText, styles.textMutedColor]}>
           {subtitle}
         </Text>
@@ -68,5 +85,9 @@ const createStyles = (colors: ColorScheme) =>
     textMutedColor: {
       color: colors.textMuted,
       fontSize: 14,
+    },
+    titleContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
   });

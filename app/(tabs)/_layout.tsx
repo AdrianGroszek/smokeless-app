@@ -13,6 +13,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: colors.primary,
         tabBarStyle: {
           backgroundColor: colors.surface,
+          borderColor: colors.border,
         },
       }}
     >

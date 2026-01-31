@@ -22,6 +22,7 @@ export type ColorScheme = {
   primaryMuted: string;
   primary10: string;
 
+  gold: string;
   warning: string;
   warning10: string;
 
@@ -42,6 +43,7 @@ export const lightColors: ColorScheme = {
   primaryMuted: '#1AA79A',
   primary10: 'rgba(46, 196, 181, 0.1)',
 
+  gold: '#ffd60a',
   warning: '#FFC72C',
   warning10: 'rgba(255, 199, 44, 0.1)',
 
@@ -60,15 +62,15 @@ export const darkColors: ColorScheme = {
 
   primary: '#2EC4B6',
   primaryMuted: '#1AA79A',
-  primary10: '#2EC4B6',
-
+  primary10: 'rgba(46, 196, 181, 0.1)',
+  gold: '#ffd60a',
   warning: '#FFC72C',
   warning10: 'rgba(255, 199, 44, 0.1)',
 
   statusBarStyle: 'dark-content' as const,
 };
 
-type ThemeMode = 'light' | 'dark' | 'system';
+export type ThemeMode = 'light' | 'dark' | 'system';
 
 type ThemeContextType = {
   mode: ThemeMode;

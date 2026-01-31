@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { useTheme } from '@/hooks/useTheme';
+import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { useSmokingStore } from '@/stores/useSmokingStore';
 import useTimer from '@/hooks/useTimer';
+import { useMemo } from 'react';
 
 export default function LastCigaretteTimeText() {
   const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const now = useTimer();
 
@@ -39,26 +41,24 @@ export default function LastCigaretteTimeText() {
 
   return (
     <View style={styles.contentCenter}>
-      <Text style={{ fontSize: 16, fontWeight: 600 }}>Smoked today</Text>
-      <Text>
+      <Text
+        style={{ fontSize: 16, fontWeight: 600, color: colors.textSecondary }}
+      >
+        Smoked today
+      </Text>
+      <Text style={{ color: colors.textSecondary }}>
         You smoked{' '}
-        <Text style={{ color: colors.primaryMuted, fontWeight: 600 }}>
+        <Text style={{ color: colors.primary, fontWeight: 600 }}>
           {timeText}
         </Text>
       </Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  contentCenter: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  time: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#000',
-    textAlign: 'center',
-  },
-});
+const createStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    contentCenter: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });

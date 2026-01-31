@@ -1,4 +1,5 @@
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
+import { useSmokingStore } from '@/stores/useSmokingStore';
 import Card from '@/UI/Card';
 import Subtitle from '@/UI/Subtitle';
 
@@ -8,19 +9,22 @@ export default function DaysLogs() {
   const { colors } = useTheme();
   const styles = createStyles(colors);
 
+  const dailyLogs = useSmokingStore((state) => state.dailyLogs);
+
   return (
     <View style={{ gap: 8 }}>
       <Subtitle>Days logs</Subtitle>
-      <Card
-        title='12-01-2026'
-        subtitle='Fell cigarettes'
-        iconName='leaf-outline'
-      />
-      <Card
-        title='13-01-2026'
-        subtitle='Fell cigarettes'
-        iconName='leaf-outline'
-      />
+      {Object.entries(dailyLogs)
+        .reverse()
+        .slice(1, 4)
+        .map(([date, log]) => (
+          <Card
+            title={log.date}
+            subtitle={`You smoked ${log.cigarettesSmoked} cigarettes`}
+            iconName='calendar-outline'
+            key={date}
+          />
+        ))}
       <Pressable style={styles.button} onPress={() => console.log('click')}>
         <Text style={styles.buttonText}>Check all days</Text>
       </Pressable>

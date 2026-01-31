@@ -1,0 +1,15 @@
+export const MOTIVATION_TEXTS = [
+  'One less today',
+  'You are doing great',
+  'Keep going',
+  'Small steps matter',
+  'You are stronger',
+  'Progress beats perfection',
+  'Progress every day',
+  'Stay focused',
+  'Breathe a little easier',
+  'Less smoke, more life',
+  'Discipline builds freedom',
+  'You’re doing real work',
+  'One cigarette less today',
+];

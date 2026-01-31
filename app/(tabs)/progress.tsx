@@ -7,14 +7,47 @@ import Card from '@/UI/Card';
 
 import DaysLogs from '@/components/DaysLogs';
 import Achievements from '@/components/Achievements';
+import { useSmokingStore } from '@/stores/useSmokingStore';
+import { formatMinutesToTime } from '@/utils/helpers';
 
 export default function Progress() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const profileData = useSmokingStore((state) => state.profile);
+  const getCurrentDay = useSmokingStore((state) => state.getCurrentDay);
+  const getTotalMoneySaved = useSmokingStore(
+    (state) => state.getTotalMoneySaved,
+  );
+  const getTotalCigarettesSaved = useSmokingStore(
+    (state) => state.getTotalCigarettesSaved,
+  );
+  const getTotalTimeSaved = useSmokingStore((state) => state.getTotalTimeSaved);
+  const longestStreak = useSmokingStore((state) => state.longestStreak);
+
+  const currentDay = getCurrentDay();
+  const totalMoneySaved = getTotalMoneySaved();
+  const totalCigarettesSaved = getTotalCigarettesSaved();
+  const { days, hours, minutes } = formatMinutesToTime(getTotalTimeSaved());
+
+  let totalTimeSavedText = '';
+
+  if (days + hours + minutes < 0) {
+    totalTimeSavedText = '0m';
+  } else if (days > 0) {
+    totalTimeSavedText = `${days}d ${hours}h ${minutes}m`;
+  } else if (days < 0 && hours > 0) {
+    totalTimeSavedText = `${hours}h ${minutes}m`;
+  } else {
+    totalTimeSavedText = `${minutes}m`;
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <Header label='Your Progress' currentDay={'2'} totalDays={'2'} />
+      <Header
+        label='Your Progress'
+        currentDay={currentDay.toString()}
+        totalDays={profileData?.planDuration.toString()}
+      />
       <ScrollView
         contentContainerStyle={{ gap: 16, paddingBottom: 16 }}
         showsVerticalScrollIndicator={false}
@@ -22,26 +55,26 @@ export default function Progress() {
         <View style={styles.cardsContainer}>
           <View style={styles.cardsRowContainer}>
             <Card
-              title='-42%'
+              title={`${totalCigarettesSaved < 0 ? 0 : totalCigarettesSaved}`}
               subtitle='Less cigaretes'
               iconName='leaf-outline'
             />
             <Card
-              title='-42%'
-              subtitle='Less cigaretes'
-              iconName='leaf-outline'
+              title={`${totalMoneySaved.toFixed(2)} ${profileData?.currency}`}
+              subtitle='Money saved'
+              iconName='cash-outline'
             />
           </View>
           <View style={styles.cardsRowContainer}>
             <Card
-              title='-42%'
-              subtitle='Less cigaretes'
-              iconName='leaf-outline'
+              title={totalTimeSavedText}
+              subtitle='Time saved'
+              iconName='time-outline'
             />
             <Card
-              title='-42%'
-              subtitle='Less cigaretes'
-              iconName='leaf-outline'
+              title={longestStreak.toString()}
+              subtitle='Longest streak'
+              iconName='flame-outline'
             />
           </View>
         </View>
