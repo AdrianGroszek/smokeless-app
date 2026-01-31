@@ -22,6 +22,13 @@ function getMonday(date: Date): Date {
   return d;
 }
 
+function formatLocalDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export default function useWeekData(): WeekDayData[] {
   const dailyLogs = useSmokingStore((state) => state.dailyLogs);
   const getLimitForDate = useSmokingStore((state) => state.getLimitForDate);
@@ -30,7 +37,7 @@ export default function useWeekData(): WeekDayData[] {
   return useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const todayKey = today.toISOString().split('T')[0];
+    const todayKey = formatLocalDate(today);
 
     const startDate = profile?.startDate ? new Date(profile.startDate) : null;
     if (startDate) {
@@ -44,7 +51,7 @@ export default function useWeekData(): WeekDayData[] {
       d.setDate(monday.getDate() + i);
       d.setHours(0, 0, 0, 0);
 
-      const key = d.toISOString().split('T')[0];
+      const key = formatLocalDate(d);
       const log = dailyLogs[key];
 
       const isBeforeStart = startDate ? d < startDate : false;
