@@ -20,7 +20,11 @@ export default function LastCigaretteTimeText() {
   if (!lastSmokeTime) {
     return (
       <View style={styles.contentCenter}>
-        <Text>No cigarettes today</Text>
+        <Text
+          style={{ fontSize: 16, fontWeight: 600, color: colors.textSecondary }}
+        >
+          No cigarettes today
+        </Text>
       </View>
     );
   }

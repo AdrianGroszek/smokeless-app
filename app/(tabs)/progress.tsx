@@ -27,15 +27,15 @@ export default function Progress() {
   const currentDay = getCurrentDay();
   const totalMoneySaved = getTotalMoneySaved();
   const totalCigarettesSaved = getTotalCigarettesSaved();
-  const { days, hours, minutes } = formatMinutesToTime(getTotalTimeSaved());
+  const totalTimeSaved = getTotalTimeSaved();
+
+  const { days, hours, minutes } = formatMinutesToTime(totalTimeSaved);
 
   let totalTimeSavedText = '';
 
-  if (days + hours + minutes < 0) {
-    totalTimeSavedText = '0m';
-  } else if (days > 0) {
+  if (days > 0) {
     totalTimeSavedText = `${days}d ${hours}h ${minutes}m`;
-  } else if (days < 0 && hours > 0) {
+  } else if (hours > 0) {
     totalTimeSavedText = `${hours}h ${minutes}m`;
   } else {
     totalTimeSavedText = `${minutes}m`;

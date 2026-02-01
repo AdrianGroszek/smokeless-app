@@ -1,5 +1,6 @@
 import { ACHIEVEMENTS } from '@/constants/achievements';
 import { getTodayKey, getYesterdayKey } from '@/utils/helpers';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -14,7 +15,7 @@ export type UserProfile = {
   startDate: string;
 };
 
-type DailyData = {
+export type DailyData = {
   date: string;
   cigarettesSmoked: number;
   smokingTimes: string[];
@@ -24,6 +25,7 @@ export type Achievement = {
   id: string;
   title: string;
   description: string;
+  iconName: keyof typeof Ionicons.glyphMap | any;
   unlocked: boolean;
   unlockedAt?: number;
 };
@@ -244,6 +246,18 @@ export const useSmokingStore = create<SmokingStore>()(
           profile: null,
           dailyLogs: {},
           onboardingCompleted: false,
+          currentStreak: 0,
+          longestStreak: 0,
+          achievements: Object.values(ACHIEVEMENTS).reduce(
+            (acc, a) => {
+              acc[a.id] = {
+                ...a,
+                unlocked: false,
+              };
+              return acc;
+            },
+            {} as Record<string, Achievement>,
+          ),
         });
       },
 
@@ -322,7 +336,7 @@ export const useSmokingStore = create<SmokingStore>()(
 
         Object.entries(get().dailyLogs).forEach(([date, log]) => {
           if (date === todayDate) return;
-          totalSaved += cigarettesPerDay - log.cigarettesSmoked;
+          totalSaved += Math.max(cigarettesPerDay - log.cigarettesSmoked, 0);
         });
 
         return totalSaved;

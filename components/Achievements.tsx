@@ -15,9 +15,9 @@ export default function Achievements() {
   );
   const totalAchievements = Object.values(achievements).length;
 
-  // const sorted = Object.values(achievements).sort(
-  //   (a, b) => (a.unlockedAt ?? 0) - (b.unlockedAt ?? 0),
-  // );
+  const sorted = Object.values(achievements).sort(
+    (a, b) => (b.unlockedAt ?? 0) - (a.unlockedAt ?? 0),
+  );
 
   return (
     <View style={styles.container}>
@@ -29,11 +29,11 @@ export default function Achievements() {
           </Text>
         </View>
       </View>
-      {Object.values(achievements).map((item) => (
+      {sorted.map((item) => (
         <AchievementCard
           title={item.title}
           subtitle={item.description}
-          iconName='leaf-outline'
+          iconName={item.iconName}
           isLocked={!item.unlocked}
           unlockedDate={item?.unlockedAt}
           key={item.id}

@@ -3,13 +3,15 @@ import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import ProgressCard from '@/components/ProgressCard';
 import MotivationalCard from '@/components/MotivationalCard';
 import WeeklyCalendar from '@/components/WeeklyCalendar';
 import SummarySection from '@/components/SummarySection';
 import LastAchievements from '@/components/LastAchievements';
 import { useSmokingStore } from '@/stores/useSmokingStore';
+import SmokingDayDetailsBottomSheet from '@/components/SmokingDayDetailsBottomSheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 export default function Index() {
   const { colors } = useTheme();
@@ -19,27 +21,42 @@ export default function Index() {
 
   const currentDay = getCurrentDay();
 
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
+  const handleDayPress = (dateKey: string, isDisabled: boolean) => {
+    if (isDisabled) return;
+    setSelectedDate(dateKey);
+    bottomSheetRef.current?.snapToIndex(2);
+  };
+
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <StatusBar
-        style={colors.statusBarStyle === 'light-content' ? 'dark' : 'light'}
+    <>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <StatusBar
+          style={colors.statusBarStyle === 'light-content' ? 'dark' : 'light'}
+        />
+        <Header
+          label={`Hello, ${userProfileData?.username}!`}
+          currentDay={currentDay.toString()}
+          totalDays={userProfileData?.planDuration.toString()}
+        />
+        <ProgressCard />
+        <ScrollView
+          contentContainerStyle={{ gap: 16, paddingBottom: 16 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <MotivationalCard />
+          <WeeklyCalendar onDayPress={handleDayPress} />
+          <SummarySection />
+          <LastAchievements />
+        </ScrollView>
+      </SafeAreaView>
+      <SmokingDayDetailsBottomSheet
+        ref={bottomSheetRef}
+        dateKey={selectedDate}
       />
-      <Header
-        label={`Hello, ${userProfileData?.username}!`}
-        currentDay={currentDay.toString()}
-        totalDays={userProfileData?.planDuration.toString()}
-      />
-      <ProgressCard />
-      <ScrollView
-        contentContainerStyle={{ gap: 16, paddingBottom: 16 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <MotivationalCard />
-        <WeeklyCalendar />
-        <SummarySection />
-        <LastAchievements />
-      </ScrollView>
-    </SafeAreaView>
+    </>
   );
 }
 

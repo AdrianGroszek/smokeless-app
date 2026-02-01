@@ -3,12 +3,15 @@ import useWeekData from '@/hooks/useWeekData';
 
 import Subtitle from '@/UI/Subtitle';
 import { useMemo } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-export default function WeeklyCalendar() {
+type Props = {
+  onDayPress: (dateKey: string, isDisabled: boolean) => void;
+};
+
+export default function WeeklyCalendar({ onDayPress }: Props) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-
   const weekData = useWeekData();
 
   return (
@@ -16,8 +19,10 @@ export default function WeeklyCalendar() {
       <Subtitle navigateTo='/progress'>This week</Subtitle>
       <View style={styles.weekCalendarContainer}>
         {weekData.map((day) => (
-          <View
+          <Pressable
             key={day.key}
+            onPress={() => onDayPress(day.key, day.isDisabled)}
+            disabled={day.isDisabled}
             style={[
               styles.weekDayTile,
               {
@@ -57,7 +62,7 @@ export default function WeeklyCalendar() {
             >
               {day.date}
             </Text>
-          </View>
+          </Pressable>
         ))}
       </View>
     </View>

@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSmokingStore } from '@/stores/useSmokingStore';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@/hooks/useTheme';
+import { fakeAchievements, fakeDailyLogs, fakeProfile } from '@/utils/fakeData';
 
 export default function Settings() {
   const resetApp = useSmokingStore((state) => state.resetApp);
@@ -30,6 +31,17 @@ export default function Settings() {
 
   const handleToggleTheme = () => {
     return isDark ? setMode('light') : setMode('dark');
+  };
+
+  const handleSetFakeData = () => {
+    useSmokingStore.setState({
+      profile: fakeProfile,
+      dailyLogs: fakeDailyLogs,
+      achievements: fakeAchievements,
+      onboardingCompleted: true,
+      currentStreak: 8,
+      longestStreak: 8,
+    });
   };
 
   return (
@@ -65,6 +77,22 @@ export default function Settings() {
         >
           <Text style={{ color: 'white', fontSize: 18, fontWeight: 600 }}>
             Toggle Theme
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={handleSetFakeData}
+          style={{
+            backgroundColor: '#8a8a8a',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 12,
+            marginTop: 100,
+            marginHorizontal: 20,
+            borderRadius: 50,
+          }}
+        >
+          <Text style={{ color: 'white', fontSize: 18, fontWeight: 600 }}>
+            Set fake data
           </Text>
         </Pressable>
       </View>
