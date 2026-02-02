@@ -22,13 +22,13 @@ export default function DaysLogs({ onDayPress }: Props) {
         .reverse()
         .slice(1, 4)
         .map(([date, log]) => (
-          <Pressable key={date} onPress={() => onDayPress(date)}>
-            <Card
-              title={log.date}
-              subtitle={`You smoked ${log.cigarettesSmoked} cigarettes`}
-              iconName='calendar-outline'
-            />
-          </Pressable>
+          <Card
+            title={log.date}
+            subtitle={`You smoked ${log.cigarettesSmoked} cigarettes`}
+            iconName='calendar-outline'
+            onPress={() => onDayPress(date)}
+            key={date}
+          />
         ))}
       <Pressable style={styles.button} onPress={() => console.log('click')}>
         <Text style={styles.buttonText}>Check all days</Text>

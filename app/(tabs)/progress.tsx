@@ -11,6 +11,7 @@ import { useSmokingStore } from '@/stores/useSmokingStore';
 import { formatMinutesToTime } from '@/utils/helpers';
 import BottomSheet from '@gorhom/bottom-sheet';
 import SmokingDayDetailsBottomSheet from '@/components/SmokingDayDetailsBottomSheet';
+import SmokingChart from '@/components/SmokingChart';
 
 export default function Progress() {
   const { colors } = useTheme();
@@ -89,7 +90,7 @@ export default function Progress() {
               />
             </View>
           </View>
-
+          <SmokingChart />
           <DaysLogs onDayPress={handleDayPress} />
           <Achievements />
         </ScrollView>

@@ -11,6 +11,24 @@ export const fakeProfile: UserProfile = {
 };
 
 export const fakeDailyLogs: Record<string, DailyData> = {
+  '2026-01-19': {
+    date: '2026-01-29',
+    cigarettesSmoked: 12,
+    smokingTimes: [
+      '2026-01-20T07:30:00.000Z',
+      '2026-01-20T08:10:00.000Z',
+      '2026-01-20T08:55:00.000Z',
+      '2026-01-20T09:40:00.000Z',
+      '2026-01-20T10:30:00.000Z',
+      '2026-01-20T11:15:00.000Z',
+      '2026-01-20T12:00:00.000Z',
+      '2026-01-20T13:00:00.000Z',
+      '2026-01-20T14:10:00.000Z',
+      '2026-01-20T15:00:00.000Z',
+      '2026-01-20T16:10:00.000Z',
+      '2026-01-20T17:20:00.000Z',
+    ],
+  },
   '2026-01-20': {
     date: '2026-01-20',
     cigarettesSmoked: 15,
@@ -92,8 +110,12 @@ export const fakeDailyLogs: Record<string, DailyData> = {
 
   '2026-01-24': {
     date: '2026-01-24',
-    cigarettesSmoked: 0,
-    smokingTimes: [],
+    cigarettesSmoked: 3,
+    smokingTimes: [
+      '2026-01-20T14:10:00.000Z',
+      '2026-01-20T16:10:00.000Z',
+      '2026-01-20T17:20:00.000Z',
+    ],
   },
 
   '2026-01-25': {
@@ -191,8 +213,13 @@ export const fakeDailyLogs: Record<string, DailyData> = {
 
   '2026-02-01': {
     date: '2026-02-01',
-    cigarettesSmoked: 0,
-    smokingTimes: [],
+    cigarettesSmoked: 2,
+    smokingTimes: ['2026-01-20T09:40:00.000Z', '2026-01-20T15:00:00.000Z'],
+  },
+  '2026-02-02': {
+    date: '2026-02-02',
+    cigarettesSmoked: 1,
+    smokingTimes: ['2026-01-20T19:45:00.000Z', '2026-01-20T20:32:00.000Z'],
   },
 };
 

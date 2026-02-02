@@ -23,12 +23,13 @@ export default function WeeklyCalendar({ onDayPress }: Props) {
             key={day.key}
             onPress={() => onDayPress(day.key, day.isDisabled)}
             disabled={day.isDisabled}
-            style={[
+            style={({ pressed }) => [
               styles.weekDayTile,
               {
                 opacity: day.isDisabled ? 0.6 : 1,
                 borderColor: day.isToday ? colors.primary : colors.surface,
               },
+              pressed && { backgroundColor: colors.primaryMuted },
             ]}
           >
             <View

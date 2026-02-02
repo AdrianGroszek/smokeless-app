@@ -18,12 +18,10 @@ export default function Subtitle({ children, navigateTo }: Props) {
       <View style={styles.subtitlesContainer}>
         <Text style={styles.subtitleText}>{children}</Text>
         <Link href='/progress' asChild>
-          <Pressable>
-            <Text style={styles.linkText}>
-              View All
-              <Ionicons name='chevron-forward-outline' />
-            </Text>
-          </Pressable>
+          <Text style={styles.linkText}>
+            View All
+            <Ionicons name='chevron-forward-outline' />
+          </Text>
         </Link>
       </View>
     );
