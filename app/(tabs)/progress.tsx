@@ -1,5 +1,5 @@
 import { StyleSheet, ScrollView, View } from 'react-native';
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '@/components/Header';
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
@@ -9,6 +9,8 @@ import DaysLogs from '@/components/DaysLogs';
 import Achievements from '@/components/Achievements';
 import { useSmokingStore } from '@/stores/useSmokingStore';
 import { formatMinutesToTime } from '@/utils/helpers';
+import BottomSheet from '@gorhom/bottom-sheet';
+import SmokingDayDetailsBottomSheet from '@/components/SmokingDayDetailsBottomSheet';
 
 export default function Progress() {
   const { colors } = useTheme();
@@ -41,48 +43,62 @@ export default function Progress() {
     totalTimeSavedText = `${minutes}m`;
   }
 
-  return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <Header
-        label='Your Progress'
-        currentDay={currentDay.toString()}
-        totalDays={profileData?.planDuration.toString()}
-      />
-      <ScrollView
-        contentContainerStyle={{ gap: 16, paddingBottom: 16 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.cardsContainer}>
-          <View style={styles.cardsRowContainer}>
-            <Card
-              title={`${totalCigarettesSaved < 0 ? 0 : totalCigarettesSaved}`}
-              subtitle='Less cigaretes'
-              iconName='leaf-outline'
-            />
-            <Card
-              title={`${totalMoneySaved.toFixed(2)} ${profileData?.currency}`}
-              subtitle='Money saved'
-              iconName='cash-outline'
-            />
-          </View>
-          <View style={styles.cardsRowContainer}>
-            <Card
-              title={totalTimeSavedText}
-              subtitle='Time saved'
-              iconName='time-outline'
-            />
-            <Card
-              title={longestStreak.toString()}
-              subtitle='Longest streak'
-              iconName='flame-outline'
-            />
-          </View>
-        </View>
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-        <DaysLogs />
-        <Achievements />
-      </ScrollView>
-    </SafeAreaView>
+  const handleDayPress = (dateKey: string) => {
+    setSelectedDate(dateKey);
+    bottomSheetRef.current?.snapToIndex(1);
+  };
+
+  return (
+    <>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <Header
+          label='Your Progress'
+          currentDay={currentDay.toString()}
+          totalDays={profileData?.planDuration.toString()}
+        />
+        <ScrollView
+          contentContainerStyle={{ gap: 16, paddingBottom: 16 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.cardsContainer}>
+            <View style={styles.cardsRowContainer}>
+              <Card
+                title={`${totalCigarettesSaved < 0 ? 0 : totalCigarettesSaved}`}
+                subtitle='Less cigaretes'
+                iconName='leaf-outline'
+              />
+              <Card
+                title={`${totalMoneySaved.toFixed(2)} ${profileData?.currency}`}
+                subtitle='Money saved'
+                iconName='cash-outline'
+              />
+            </View>
+            <View style={styles.cardsRowContainer}>
+              <Card
+                title={totalTimeSavedText}
+                subtitle='Time saved'
+                iconName='time-outline'
+              />
+              <Card
+                title={longestStreak.toString()}
+                subtitle='Longest streak'
+                iconName='flame-outline'
+              />
+            </View>
+          </View>
+
+          <DaysLogs onDayPress={handleDayPress} />
+          <Achievements />
+        </ScrollView>
+      </SafeAreaView>
+      <SmokingDayDetailsBottomSheet
+        ref={bottomSheetRef}
+        dateKey={selectedDate}
+      />
+    </>
   );
 }
 

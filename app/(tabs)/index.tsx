@@ -27,7 +27,7 @@ export default function Index() {
   const handleDayPress = (dateKey: string, isDisabled: boolean) => {
     if (isDisabled) return;
     setSelectedDate(dateKey);
-    bottomSheetRef.current?.snapToIndex(2);
+    bottomSheetRef.current?.snapToIndex(1);
   };
 
   return (

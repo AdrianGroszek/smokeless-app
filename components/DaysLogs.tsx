@@ -5,7 +5,11 @@ import Subtitle from '@/UI/Subtitle';
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function DaysLogs() {
+type Props = {
+  onDayPress: (dateKey: string) => void;
+};
+
+export default function DaysLogs({ onDayPress }: Props) {
   const { colors } = useTheme();
   const styles = createStyles(colors);
 
@@ -18,12 +22,13 @@ export default function DaysLogs() {
         .reverse()
         .slice(1, 4)
         .map(([date, log]) => (
-          <Card
-            title={log.date}
-            subtitle={`You smoked ${log.cigarettesSmoked} cigarettes`}
-            iconName='calendar-outline'
-            key={date}
-          />
+          <Pressable key={date} onPress={() => onDayPress(date)}>
+            <Card
+              title={log.date}
+              subtitle={`You smoked ${log.cigarettesSmoked} cigarettes`}
+              iconName='calendar-outline'
+            />
+          </Pressable>
         ))}
       <Pressable style={styles.button} onPress={() => console.log('click')}>
         <Text style={styles.buttonText}>Check all days</Text>

@@ -1,11 +1,13 @@
 import { useMemo, forwardRef, useCallback } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { useSmokingStore } from '@/stores/useSmokingStore';
+import { getDayPeriod } from '@/utils/helpers';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 type Props = {
   dateKey: string | null;
@@ -63,6 +65,7 @@ const SmokingDayDetailsBottomSheet = forwardRef<BottomSheet, Props>(
         index={-1}
         snapPoints={snapPoints}
         enablePanDownToClose
+        enableDynamicSizing={false}
         backdropComponent={renderBackdrop}
         backgroundStyle={{ backgroundColor: colors.surface }}
         handleIndicatorStyle={{ backgroundColor: colors.textSecondary }}
@@ -71,6 +74,12 @@ const SmokingDayDetailsBottomSheet = forwardRef<BottomSheet, Props>(
           <Text style={styles.title}>
             {dateKey ? formatDate(dateKey) : 'Smoking Times'}
           </Text>
+          <View style={styles.summary}>
+            <Text style={styles.summaryText}>
+              Total: {smokingTimes.length} cigarette
+              {smokingTimes.length !== 1 ? 's' : ''}
+            </Text>
+          </View>
 
           <BottomSheetScrollView
             contentContainerStyle={styles.scrollContainer}
@@ -81,23 +90,37 @@ const SmokingDayDetailsBottomSheet = forwardRef<BottomSheet, Props>(
                 <Text style={styles.emptyText}>No cigarettes smoked 🎉</Text>
               </View>
             ) : (
-              smokingTimes.map((time, index) => (
-                <View key={`${time}-${index}`} style={styles.timeItem}>
-                  <View style={styles.timeCircle}>
-                    <Text style={styles.timeCircleText}>{index + 1}</Text>
+              smokingTimes.map((time, index) => {
+                const dayPeriod = getDayPeriod(time);
+                const isLast = index === smokingTimes.length - 1;
+                return (
+                  <View
+                    key={`${time}-${index}`}
+                    style={[
+                      styles.timeItem,
+                      {
+                        borderBottomColor: isLast
+                          ? 'transparent'
+                          : colors.border,
+                      },
+                    ]}
+                  >
+                    <View style={{ flexDirection: 'row', gap: 8 }}>
+                      <Text
+                        style={styles.timeTextMuted}
+                      >{`${index + 1}.`}</Text>
+                      <Text style={styles.timeText}>{formatTime(time)}</Text>
+                    </View>
+                    <Ionicons
+                      name={dayPeriod.icon}
+                      color={colors.textPrimary}
+                      size={20}
+                    />
                   </View>
-                  <Text style={styles.timeText}>{formatTime(time)}</Text>
-                </View>
-              ))
+                );
+              })
             )}
           </BottomSheetScrollView>
-
-          <View style={styles.summary}>
-            <Text style={styles.summaryText}>
-              Total: {smokingTimes.length} cigarette
-              {smokingTimes.length !== 1 ? 's' : ''}
-            </Text>
-          </View>
         </View>
       </BottomSheet>
     );
@@ -130,30 +153,23 @@ const createStyles = (colors: ColorScheme) =>
     timeItem: {
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 8,
       paddingVertical: 12,
-      paddingHorizontal: 16,
-      backgroundColor: colors.background,
+      paddingHorizontal: 8,
+      borderBottomWidth: 1,
       borderRadius: 8,
-      marginBottom: 8,
-    },
-    timeCircle: {
-      width: 32,
-      height: 32,
-      borderRadius: 16,
-      backgroundColor: colors.primary,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginRight: 12,
-    },
-    timeCircleText: {
-      color: '#fff',
-      fontWeight: '600',
-      fontSize: 14,
     },
     timeText: {
       fontSize: 16,
       color: colors.textPrimary,
       fontWeight: '500',
+    },
+    timeTextMuted: {
+      fontSize: 16,
+      color: colors.textMuted,
+      fontWeight: '500',
+      minWidth: 24,
     },
     emptyState: {
       flex: 1,
@@ -167,9 +183,6 @@ const createStyles = (colors: ColorScheme) =>
     },
     summary: {
       paddingVertical: 16,
-      borderTopWidth: 1,
-      borderTopColor: colors.surface,
-      alignItems: 'center',
     },
     summaryText: {
       fontSize: 16,

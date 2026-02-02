@@ -1,9 +1,15 @@
 import { MOTIVATION_TEXTS } from '@/constants/motivationTexts';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 type FormattedTime = {
   days: number;
   hours: number;
   minutes: number;
+};
+
+export type DayPeriod = {
+  label: string;
+  icon: keyof typeof Ionicons.glyphMap;
 };
 
 export const formatAmount = (value: string): string => {
@@ -53,3 +59,21 @@ export function formatLocalDate(date: Date): string {
 export function formatDateFromTimestamp(timestamp: number): string {
   return formatLocalDate(new Date(timestamp));
 }
+
+export const getDayPeriod = (dateString: string): DayPeriod => {
+  const hour = new Date(dateString).getHours();
+
+  if (hour >= 5 && hour < 11) {
+    return { label: 'Morning', icon: 'partly-sunny-outline' };
+  }
+
+  if (hour >= 11 && hour < 17) {
+    return { label: 'Day', icon: 'sunny-outline' };
+  }
+
+  if (hour >= 17 && hour < 23) {
+    return { label: 'Evening', icon: 'cloudy-night-outline' };
+  }
+
+  return { label: 'Night', icon: 'moon-outline' };
+};

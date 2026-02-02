@@ -160,7 +160,7 @@ export const fakeDailyLogs: Record<string, DailyData> = {
 
   '2026-01-29': {
     date: '2026-01-29',
-    cigarettesSmoked: 5,
+    cigarettesSmoked: 3,
     smokingTimes: [
       '2026-01-20T07:30:00.000Z',
       '2026-01-20T09:40:00.000Z',
@@ -174,13 +174,14 @@ export const fakeDailyLogs: Record<string, DailyData> = {
     smokingTimes: [
       '2026-01-20T07:30:00.000Z',
       '2026-01-20T08:10:00.000Z',
+      '2026-01-20T13:32:00.000Z',
       '2026-01-20T15:00:00.000Z',
     ],
   },
 
   '2026-01-31': {
     date: '2026-01-31',
-    cigarettesSmoked: 5,
+    cigarettesSmoked: 3,
     smokingTimes: [
       '2026-01-20T08:10:00.000Z',
       '2026-01-20T09:40:00.000Z',
