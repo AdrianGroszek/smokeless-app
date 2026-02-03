@@ -14,6 +14,7 @@ import OnboardingProgressBar from '@/components/OnboardingProgressBar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Button from '@/components/Button';
+import * as Haptics from 'expo-haptics';
 
 export type PlansDataType = {
   id: number;
@@ -64,6 +65,7 @@ export default function Plan() {
 
   const handleNext = async () => {
     if (!selectedPlan) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
       alert('Choose your plan');
       return;
     }
@@ -75,11 +77,19 @@ export default function Plan() {
       );
       router.push('/(onboarding)/ready');
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       console.error('Error saving plan: ', error);
       Alert.alert('Error', 'Failed to save your plan. Please try again.', [
         { text: 'OK' },
       ]);
     }
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  };
+
+  const handleSelectPlan = (item: PlansDataType) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setSelectedPlan(item);
   };
 
   return (
@@ -108,7 +118,7 @@ export default function Plan() {
                     styles.selectButton,
                     selectedPlan.id === item.id && styles.selected,
                   ]}
-                  onPress={() => setSelectedPlan(item)}
+                  onPress={() => handleSelectPlan(item)}
                 >
                   <View style={styles.selectButtonRow}>
                     <Ionicons

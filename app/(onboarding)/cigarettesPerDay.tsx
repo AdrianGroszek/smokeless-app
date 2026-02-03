@@ -17,6 +17,7 @@ import OnboardingProgressBar from '@/components/OnboardingProgressBar';
 import Button from '@/components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import * as Haptics from 'expo-haptics';
 
 export default function CigarettesPerDay() {
   const [cigarettesPerDay, setCigarettesPerDay] = useState('');
@@ -43,6 +44,7 @@ export default function CigarettesPerDay() {
   const handleNext = async () => {
     const num = parseInt(cigarettesPerDay);
     if (isNaN(num) || num <= 0) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
       alert('Please enter a valid number');
       return;
     }
@@ -54,6 +56,7 @@ export default function CigarettesPerDay() {
       );
       router.push('/(onboarding)/cigarettesPerPack');
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       console.error('Error saving cigarettesPerDay: ', error);
       Alert.alert(
         'Error',
@@ -62,6 +65,7 @@ export default function CigarettesPerDay() {
       );
     }
 
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     Keyboard.dismiss();
   };
 

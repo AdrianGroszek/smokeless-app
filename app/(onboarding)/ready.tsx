@@ -9,6 +9,7 @@ import Button from '@/components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OnboardingCard from '@/components/OnboardingCard';
 import { UserProfile, useSmokingStore } from '@/stores/useSmokingStore';
+import * as Haptics from 'expo-haptics';
 
 export default function Ready() {
   const router = useRouter();
@@ -54,6 +55,7 @@ export default function Ready() {
 
   const handleNext = async () => {
     if (!data) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
       Alert.alert('Error', 'No data loaded');
       return;
     }
@@ -73,9 +75,12 @@ export default function Ready() {
 
       router.replace('/(tabs)');
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       console.error('Error saving profile:', error);
       Alert.alert('Error', 'Failed to save your profile');
     }
+
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   };
 
   const priceAndCurrency = data ? `${data.packPrice} ${data.currency}` : '';

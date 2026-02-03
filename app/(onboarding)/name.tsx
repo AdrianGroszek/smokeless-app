@@ -18,6 +18,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import OnboardingProgressBar from '@/components/OnboardingProgressBar';
 import Button from '@/components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Haptics from 'expo-haptics';
 
 export default function Name() {
   const [name, setName] = useState('');
@@ -41,6 +42,7 @@ export default function Name() {
 
   const handleNext = async () => {
     if (!name.trim()) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
       alert('Please enter your name');
       return;
     }
@@ -49,11 +51,13 @@ export default function Name() {
       await AsyncStorage.setItem('@onboarding_name', name.trim());
       router.push('/(onboarding)/cigarettesPerDay');
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       console.error('Error saving name: ', error);
       Alert.alert('Error', 'Failed to save your name. Please try again.', [
         { text: 'OK' },
       ]);
     }
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     Keyboard.dismiss();
   };
 

@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Pressable,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -12,12 +6,18 @@ import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import Button from '@/components/Button';
+import * as Haptics from 'expo-haptics';
 
 export default function Welcome() {
   const { colors } = useTheme();
   const router = useRouter();
 
   const styles = createStyles(colors);
+
+  const handleNext = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    router.push('/(onboarding)/name');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,9 +35,7 @@ export default function Welcome() {
           <Text style={styles.subtitle}>
             Lets create your personalized plan to help you quit smoking
           </Text>
-          <Button onPress={() => router.push('/(onboarding)/name')}>
-            Get started
-          </Button>
+          <Button onPress={handleNext}>Get started</Button>
         </View>
       </View>
     </SafeAreaView>

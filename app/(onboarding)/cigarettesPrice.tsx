@@ -19,6 +19,7 @@ import Button from '@/components/Button';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { formatAmount } from '@/utils/helpers';
+import * as Haptics from 'expo-haptics';
 
 export default function CigarettesPrice() {
   const [price, setPrice] = useState('');
@@ -56,10 +57,12 @@ export default function CigarettesPrice() {
   const handleNext = async () => {
     const num = parseFloat(price.replace(',', '.'));
     if (isNaN(num) || num <= 0) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
       alert('Please enter a valid price');
       return;
     }
     if (!currency.trim()) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
       alert('Please enter currency');
       return;
     }
@@ -72,6 +75,7 @@ export default function CigarettesPrice() {
       await AsyncStorage.setItem('@onboarding_cigarettes_currency', currency);
       router.push('/(onboarding)/plan');
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       console.error('Error saving price and currency: ', error);
       Alert.alert(
         'Error',
@@ -80,6 +84,7 @@ export default function CigarettesPrice() {
       );
     }
 
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     Keyboard.dismiss();
   };
 

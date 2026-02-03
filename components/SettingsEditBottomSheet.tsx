@@ -21,6 +21,7 @@ import BottomSheet, {
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { useSmokingStore } from '@/stores/useSmokingStore';
 import { formatAmount } from '@/utils/helpers';
+import * as Haptics from 'expo-haptics';
 
 type EditableField =
   | 'username'
@@ -110,6 +111,7 @@ const SettingsEditBottomSheet = forwardRef<BottomSheet, Props>(
         },
       });
 
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       closeWithKeyboardDismiss();
     };
 

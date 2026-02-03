@@ -3,6 +3,7 @@ import { useSmokingStore } from '@/stores/useSmokingStore';
 import Card from '@/UI/Card';
 import Subtitle from '@/UI/Subtitle';
 import { formatDate } from '@/utils/helpers';
+import { useMemo } from 'react';
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 

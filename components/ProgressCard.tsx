@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import LastCigaretteTimeText from './LastCigaretteTimeText';
 import { useSmokingStore } from '@/stores/useSmokingStore';
+import * as Haptics from 'expo-haptics';
 
 export default function ProgressCard() {
   const { colors } = useTheme();
@@ -26,6 +27,15 @@ export default function ProgressCard() {
 
   const todayLimit = getTodayLimit();
 
+  const handleAddCigarette = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    addCigarette();
+  };
+  const handleRemoveCigarette = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    removeCigarette();
+  };
+
   const progressPercent =
     todayLimit > 0 ? (todaySmokedCount / todayLimit) * 100 : 0;
 
@@ -41,7 +51,7 @@ export default function ProgressCard() {
             styles.circleButton,
             { backgroundColor: pressed ? colors.primaryMuted : colors.primary },
           ]}
-          onPress={removeCigarette}
+          onPress={handleRemoveCigarette}
         >
           <Ionicons name='remove' size={18} color='#F8FAFC' />
         </Pressable>
@@ -53,7 +63,7 @@ export default function ProgressCard() {
             styles.circleButton,
             { backgroundColor: pressed ? colors.primaryMuted : colors.primary },
           ]}
-          onPress={addCigarette}
+          onPress={handleAddCigarette}
         >
           <Ionicons name='add' size={18} color='#F8FAFC' />
         </Pressable>
