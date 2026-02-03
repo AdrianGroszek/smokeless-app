@@ -284,14 +284,12 @@ export const useSmokingStore = create<SmokingStore>()(
         const dayNumber =
           Math.floor((current.getTime() - start.getTime()) / 86400000) + 1;
 
-        const reduction = Math.floor(
-          profile.cigarettesPerDay / profile.planDuration,
+        const limit = Math.round(
+          profile.cigarettesPerDay *
+            (1 - (dayNumber - 1) / (profile.planDuration - 1)),
         );
 
-        return Math.max(
-          profile.cigarettesPerDay - reduction * (dayNumber - 1),
-          0,
-        );
+        return Math.max(limit, 0);
       },
 
       getTodayLimit: () => {

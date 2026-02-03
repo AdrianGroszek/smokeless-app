@@ -61,6 +61,8 @@ export default function CigarettesPerPack() {
         [{ text: 'OK' }],
       );
     }
+
+    Keyboard.dismiss();
   };
 
   return (

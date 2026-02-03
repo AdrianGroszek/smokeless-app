@@ -6,14 +6,14 @@ import { View, StyleSheet } from 'react-native';
 
 export default function SummarySection() {
   const profileData = useSmokingStore((state) => state.profile);
-  const getTotalMoneySaved = useSmokingStore(
-    (state) => state.getTotalMoneySaved,
+  const totalMoneySaved = useSmokingStore((state) =>
+    state.getTotalMoneySaved(),
   );
   const getTotalCigarettesSaved = useSmokingStore(
     (state) => state.getTotalCigarettesSaved,
   );
 
-  const totalMoneySaved = getTotalMoneySaved();
+  // const totalMoneySaved = getTotalMoneySaved();
   const totalCigarettesSaved = getTotalCigarettesSaved();
 
   return (

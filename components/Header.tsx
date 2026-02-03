@@ -16,9 +16,15 @@ export default function Header({ label, currentDay, totalDays }: Props) {
 
   return (
     <View>
-      <Subtitle>
-        Day {currentDay} of {totalDays}
-      </Subtitle>
+      {currentDay && totalDays ? (
+        <Subtitle>
+          {currentDay > totalDays
+            ? 'Plan completted'
+            : `Day ${currentDay} of ${totalDays}`}
+        </Subtitle>
+      ) : (
+        <Subtitle> </Subtitle>
+      )}
       <Text style={styles.headerTitle}>{label}</Text>
     </View>
   );

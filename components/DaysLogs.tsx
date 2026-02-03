@@ -22,7 +22,7 @@ export default function DaysLogs({ onDayPress, onCheckAllDays }: Props) {
       <Subtitle>Days logs</Subtitle>
       {Object.entries(dailyLogs)
         .reverse()
-        .slice(1, 4)
+        .slice(0, 3)
         .map(([date, log]) => (
           <Card
             title={formatDate(log.date)}

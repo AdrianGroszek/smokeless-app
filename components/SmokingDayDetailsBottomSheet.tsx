@@ -89,9 +89,8 @@ const SmokingDayDetailsBottomSheet = forwardRef<BottomSheet, Props>(
                     style={[
                       styles.timeItem,
                       {
-                        borderBottomColor: isLast
-                          ? 'transparent'
-                          : colors.border,
+                        borderBottomColor:
+                          isLast && index !== 0 ? 'transparent' : colors.border,
                       },
                     ]}
                   >

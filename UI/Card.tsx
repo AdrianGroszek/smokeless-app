@@ -82,7 +82,6 @@ const createStyles = (colors: ColorScheme) =>
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      marginHorizontal: 4,
       gap: 8,
     },
     iconContainer: {

@@ -19,7 +19,7 @@ export default function ProgressBar({ progressPercent }: Props) {
           {
             width: `${progressBarWidth}%`,
             backgroundColor:
-              progressBarWidth > 85 ? colors.warning : colors.primary,
+              progressBarWidth >= 100 ? colors.warning : colors.primary,
             borderRadius: 50,
           },
         ]}

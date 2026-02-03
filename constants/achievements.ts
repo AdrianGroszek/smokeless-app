@@ -79,28 +79,28 @@ export const ACHIEVEMENTS = {
   SAVINGS_10: {
     id: 'savings_10',
     title: 'First Savings',
-    description: 'Saved 10 zł',
+    description: 'Saved money 10',
     iconName: 'cash-outline',
   },
 
   SAVINGS_100: {
     id: 'savings_100',
     title: 'Dinner for Two',
-    description: 'Saved 100 zł',
+    description: 'Saved money 100',
     iconName: 'restaurant-outline',
   },
 
   SAVINGS_500: {
     id: 'savings_500',
     title: 'Weekend Trip',
-    description: 'Saved 500 zł',
+    description: 'Saved money 500',
     iconName: 'airplane-outline',
   },
 
   SAVINGS_1000: {
     id: 'savings_1000',
     title: 'Big Win',
-    description: 'Saved 1000 zł',
+    description: 'Saved money 1000',
     iconName: 'trophy-outline',
   },
 };

@@ -33,7 +33,7 @@ export default function Subtitle({ children, navigateTo }: Props) {
 const createStyles = (colors: ColorScheme) =>
   StyleSheet.create({
     subtitleText: {
-      color: colors.textSecondary,
+      color: colors.textMuted,
       fontWeight: 500,
     },
     subtitlesContainer: {

@@ -54,6 +54,7 @@ export default function Name() {
         { text: 'OK' },
       ]);
     }
+    Keyboard.dismiss();
   };
 
   return (

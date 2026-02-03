@@ -79,6 +79,8 @@ export default function CigarettesPrice() {
         [{ text: 'OK' }],
       );
     }
+
+    Keyboard.dismiss();
   };
 
   return (

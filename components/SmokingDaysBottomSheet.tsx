@@ -69,9 +69,8 @@ const SmokingDaysBottomSheet = forwardRef<BottomSheet, Props>(
                     style={({ pressed }) => [
                       styles.dayItem,
                       {
-                        borderBottomColor: isLast
-                          ? 'transparent'
-                          : colors.border,
+                        borderBottomColor:
+                          isLast && index !== 0 ? 'transparent' : colors.border,
                       },
                       pressed && { opacity: 0.6 },
                     ]}

@@ -61,6 +61,8 @@ export default function CigarettesPerDay() {
         [{ text: 'OK' }],
       );
     }
+
+    Keyboard.dismiss();
   };
 
   return (

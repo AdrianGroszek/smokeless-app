@@ -25,6 +25,7 @@ export default function LastCigaretteTimeText() {
         >
           No cigarettes today
         </Text>
+        <Text style={{ color: colors.textSecondary }}>{''}</Text>
       </View>
     );
   }
