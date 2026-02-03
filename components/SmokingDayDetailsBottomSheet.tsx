@@ -6,7 +6,7 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { useSmokingStore } from '@/stores/useSmokingStore';
-import { getDayPeriod } from '@/utils/helpers';
+import { formatDate, getDayPeriod } from '@/utils/helpers';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 type Props = {
@@ -34,16 +34,6 @@ const SmokingDayDetailsBottomSheet = forwardRef<BottomSheet, Props>(
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
-      });
-    };
-
-    const formatDate = (dateKey: string) => {
-      const date = new Date(dateKey);
-      return date.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
       });
     };
 

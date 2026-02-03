@@ -60,6 +60,15 @@ export function formatDateFromTimestamp(timestamp: number): string {
   return formatLocalDate(new Date(timestamp));
 }
 
+export const formatDate = (dateKey: string) => {
+  const date = new Date(dateKey);
+  return date.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  });
+};
+
 export const getDayPeriod = (dateString: string): DayPeriod => {
   const hour = new Date(dateString).getHours();
 

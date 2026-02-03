@@ -12,6 +12,7 @@ import { formatMinutesToTime } from '@/utils/helpers';
 import BottomSheet from '@gorhom/bottom-sheet';
 import SmokingDayDetailsBottomSheet from '@/components/SmokingDayDetailsBottomSheet';
 import SmokingChart from '@/components/SmokingChart';
+import SmokingDaysBottomSheet from '@/components/SmokingDaysBottomSheet';
 
 export default function Progress() {
   const { colors } = useTheme();
@@ -47,9 +48,27 @@ export default function Progress() {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
+  const allDaysRef = useRef<BottomSheet>(null);
+  const [isAllDaysOpen, setIsAllDaysOpen] = useState(false);
+
   const handleDayPress = (dateKey: string) => {
     setSelectedDate(dateKey);
-    bottomSheetRef.current?.snapToIndex(1);
+
+    if (isAllDaysOpen) {
+      // Close AllDaysBottomSheet if open, then open day details
+      allDaysRef.current?.close();
+      setIsAllDaysOpen(false);
+      setTimeout(() => {
+        bottomSheetRef.current?.snapToIndex(1);
+      }, 300);
+    } else {
+      bottomSheetRef.current?.snapToIndex(1);
+    }
+  };
+
+  const handleCheckAllDays = () => {
+    setIsAllDaysOpen(true);
+    allDaysRef.current?.snapToIndex(1);
   };
 
   return (
@@ -91,10 +110,14 @@ export default function Progress() {
             </View>
           </View>
           <SmokingChart />
-          <DaysLogs onDayPress={handleDayPress} />
+          <DaysLogs
+            onDayPress={handleDayPress}
+            onCheckAllDays={handleCheckAllDays}
+          />
           <Achievements />
         </ScrollView>
       </SafeAreaView>
+      <SmokingDaysBottomSheet ref={allDaysRef} onDayPress={handleDayPress} />
       <SmokingDayDetailsBottomSheet
         ref={bottomSheetRef}
         dateKey={selectedDate}

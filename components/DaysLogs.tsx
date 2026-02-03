@@ -2,14 +2,16 @@ import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import { useSmokingStore } from '@/stores/useSmokingStore';
 import Card from '@/UI/Card';
 import Subtitle from '@/UI/Subtitle';
+import { formatDate } from '@/utils/helpers';
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 type Props = {
   onDayPress: (dateKey: string) => void;
+  onCheckAllDays: () => void;
 };
 
-export default function DaysLogs({ onDayPress }: Props) {
+export default function DaysLogs({ onDayPress, onCheckAllDays }: Props) {
   const { colors } = useTheme();
   const styles = createStyles(colors);
 
@@ -23,14 +25,17 @@ export default function DaysLogs({ onDayPress }: Props) {
         .slice(1, 4)
         .map(([date, log]) => (
           <Card
-            title={log.date}
+            title={formatDate(log.date)}
             subtitle={`You smoked ${log.cigarettesSmoked} cigarettes`}
             iconName='calendar-outline'
             onPress={() => onDayPress(date)}
             key={date}
           />
         ))}
-      <Pressable style={styles.button} onPress={() => console.log('click')}>
+      <Pressable
+        style={({ pressed }) => [styles.button, pressed && { opacity: 0.7 }]}
+        onPress={onCheckAllDays}
+      >
         <Text style={styles.buttonText}>Check all days</Text>
       </Pressable>
     </View>

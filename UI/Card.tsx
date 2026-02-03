@@ -25,7 +25,11 @@ export default function Card({
 
   return (
     <Wrapper
-      style={[styles.summaryCard, isLocked && { opacity: 0.5 }]}
+      style={
+        onPress
+          ? ({ pressed }) => [styles.summaryCard, pressed && { opacity: 0.7 }]
+          : [styles.summaryCard, isLocked && { opacity: 0.5 }]
+      }
       disabled={isLocked}
       onPress={onPress}
     >
