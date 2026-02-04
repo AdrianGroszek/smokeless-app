@@ -12,6 +12,7 @@ import LastAchievements from '@/components/LastAchievements';
 import { useSmokingStore } from '@/stores/useSmokingStore';
 import SmokingDayDetailsBottomSheet from '@/components/SmokingDayDetailsBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
+import { useScrollToTop } from '@react-navigation/native';
 
 export default function Index() {
   const { colors } = useTheme();
@@ -23,6 +24,9 @@ export default function Index() {
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
+  const scrollRef = useRef<ScrollView>(null);
+  useScrollToTop(scrollRef);
 
   const handleDayPress = (dateKey: string, isDisabled: boolean) => {
     if (isDisabled) return;
@@ -43,8 +47,9 @@ export default function Index() {
         />
         <ProgressCard />
         <ScrollView
-          contentContainerStyle={{ gap: 16, paddingBottom: 16 }}
+          contentContainerStyle={{ gap: 16, paddingBottom: 100 }}
           showsVerticalScrollIndicator={false}
+          ref={scrollRef}
         >
           <MotivationalCard />
           <WeeklyCalendar onDayPress={handleDayPress} />

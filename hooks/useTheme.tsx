@@ -33,7 +33,8 @@ export const lightColors: ColorScheme = {
   background: '#F8FAFC',
   surface: '#FFFFFF',
 
-  textPrimary: '#0F172A',
+  // textPrimary: '#0F172A',
+  textPrimary: '#303e50',
   textSecondary: '#475569',
   textMuted: '#94A3B8',
 

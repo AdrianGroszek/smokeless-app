@@ -1,6 +1,7 @@
 import { StyleSheet, ScrollView, View } from 'react-native';
 import React, { useMemo, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useScrollToTop } from '@react-navigation/native';
 import Header from '@/components/Header';
 import { ColorScheme, useTheme } from '@/hooks/useTheme';
 import Card from '@/UI/Card';
@@ -51,6 +52,9 @@ export default function Progress() {
   const allDaysRef = useRef<BottomSheet>(null);
   const [isAllDaysOpen, setIsAllDaysOpen] = useState(false);
 
+  const scrollRef = useRef<ScrollView>(null);
+  useScrollToTop(scrollRef);
+
   const handleDayPress = (dateKey: string) => {
     setSelectedDate(dateKey);
 
@@ -80,8 +84,9 @@ export default function Progress() {
           totalDays={profileData?.planDuration.toString()}
         />
         <ScrollView
-          contentContainerStyle={{ gap: 16, paddingBottom: 16 }}
+          contentContainerStyle={{ gap: 16, paddingBottom: 100 }}
           showsVerticalScrollIndicator={false}
+          ref={scrollRef}
         >
           <View style={styles.cardsContainer}>
             <View style={styles.cardsRowContainer}>

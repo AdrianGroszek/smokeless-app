@@ -19,6 +19,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import SettingsItem from '@/components/SettingsItem';
 import BottomSheet from '@gorhom/bottom-sheet';
 import SettingsEditBottomSheet from '@/components/SettingsEditBottomSheet';
+import { useScrollToTop } from '@react-navigation/native';
 
 type EditableField =
   | 'username'
@@ -37,6 +38,9 @@ export default function Settings() {
   const [selectedField, setSelectedField] = useState<EditableField | null>(
     null,
   );
+
+  const scrollRef = useRef<ScrollView>(null);
+  useScrollToTop(scrollRef);
 
   const toggleDarkMode = () => {
     if (isDark) {
@@ -114,8 +118,9 @@ export default function Settings() {
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
         <Header label='Settings' />
         <ScrollView
-          contentContainerStyle={{ gap: 16, paddingBottom: 16 }}
+          contentContainerStyle={{ gap: 16, paddingBottom: 100 }}
           showsVerticalScrollIndicator={false}
+          ref={scrollRef}
         >
           <View style={{ gap: 8 }}>
             <Subtitle>Profile</Subtitle>

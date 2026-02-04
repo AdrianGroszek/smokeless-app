@@ -18,11 +18,9 @@ export default function MotivationalCard() {
       <Subtitle>
         🔥{daysStreak} {daysStreak === 1 ? 'day' : 'days'} streak
       </Subtitle>
-      <View style={styles.motivationalCard}>
-        <View style={styles.iconContainer}>
-          <Ionicons name='diamond' size={20} color='#FFFFFF' />
-        </View>
-        <Text style={styles.motivationaText}>{motivationalText}</Text>
+      <View style={styles.motivationTextWrapper}>
+        <Ionicons name='sparkles-outline' size={18} color='#f6aa1c' />
+        <Text style={styles.text}>{motivationalText}</Text>
       </View>
     </View>
   );
@@ -33,24 +31,21 @@ const createStyles = (colors: ColorScheme) =>
     container: {
       gap: 8,
     },
-    motivationalCard: {
+    motivationTextWrapper: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginHorizontal: 4,
-      padding: 8,
       gap: 8,
-      backgroundColor: colors.gold,
-      borderRadius: 10,
+      paddingHorizontal: 14,
+      paddingVertical: 10,
+      borderRadius: 100,
+
+      backgroundColor: colors.warning10,
+      borderWidth: 1,
+      borderColor: colors.warning,
     },
-    iconContainer: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 8,
-      backgroundColor: '#0F172A',
-      borderRadius: 8,
-    },
-    motivationaText: {
-      fontSize: 16,
-      fontWeight: 500,
+    text: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: '#f6aa1c',
     },
   });

@@ -11,6 +11,7 @@ import { BarChart } from 'react-native-gifted-charts';
 import { useTheme } from '@/hooks/useTheme';
 import { useSmokingStore } from '@/stores/useSmokingStore';
 import Subtitle from '@/UI/Subtitle';
+import * as Haptics from 'expo-haptics';
 
 const SmokingChart = () => {
   const { colors } = useTheme();
@@ -78,6 +79,15 @@ const SmokingChart = () => {
 
   const maxValue = Math.max(...chartData.map((d) => d.value), 0) + 2;
 
+  const handleSet7days = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setPeriod('7days');
+  };
+  const handleSetAlldays = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setPeriod('all');
+  };
+
   return (
     <View
       style={[
@@ -106,7 +116,7 @@ const SmokingChart = () => {
             pressed && { opacity: 0.7 },
             period === '7days' && { backgroundColor: colors.primary },
           ]}
-          onPress={() => setPeriod('7days')}
+          onPress={handleSet7days}
         >
           <Text
             style={[
@@ -124,7 +134,7 @@ const SmokingChart = () => {
             pressed && { opacity: 0.7 },
             period === 'all' && { backgroundColor: colors.primary },
           ]}
-          onPress={() => setPeriod('all')}
+          onPress={handleSetAlldays}
         >
           <Text
             style={[
@@ -198,7 +208,7 @@ const SmokingChart = () => {
             isAnimated
             animationDuration={600}
             showGradient
-            gradientColor={colors.primary + '80'}
+            gradientColor={colors.primary + '90'}
           />
         </ScrollView>
       ) : (
@@ -229,7 +239,7 @@ const SmokingChart = () => {
             isAnimated
             animationDuration={600}
             showGradient
-            gradientColor={colors.primary + '80'}
+            gradientColor={colors.primary + '90'}
           />
         </ScrollView>
       )}
