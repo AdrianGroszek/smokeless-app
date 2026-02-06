@@ -59,6 +59,10 @@ yarn install
 npx expo start
 ```
 
+4. Run on your device
+- Scan the QR code with Expo Go (Android) or Camera app (iOS)
+- Or press `a` for Android emulator, `i` for iOS simulator
+
 ## 📂 Project Structure
 ```
 src/
