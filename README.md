@@ -33,8 +33,8 @@ PuffFree is a React Native mobile application designed to help users quit smokin
   <img src="https://github.com/user-attachments/assets/31e7b5d7-5d38-42da-bd7b-f48b960b08bc" width="200" />
 </p>
 <p float="left">
-  <img src="https://github.com/user-attachments/assets/a155c7d1-1c1f-48ee-b4bd-b8de6416d67a" width="200" />
   <img src="https://github.com/user-attachments/assets/30dd8be0-b7ff-4566-89b5-bb95c4dfc35c" width="200" />
+  <img src="https://github.com/user-attachments/assets/a155c7d1-1c1f-48ee-b4bd-b8de6416d67a" width="200" />
   <img src="https://github.com/user-attachments/assets/06b9e442-3d90-48b9-a6ce-f1fe2153d9bd" width="200" />
   <img src="https://github.com/user-attachments/assets/45d7957d-6777-4cb9-82f2-9a64c73bfdb3" width="200" />
 </p>
